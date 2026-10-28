@@ -28,7 +28,7 @@ const DEMO_USERS = [
     password: 'RequesterPass123!',
     fullName: 'Aarav Sharma',
     department: 'Robotics & Mechatronics',
-    studentId: 'PSIT-2024-UG-042',
+    studentId: 'SKO-2024-UG-042',
     roles: ['REQUESTER'],
   },
   {
@@ -36,7 +36,7 @@ const DEMO_USERS = [
     password: 'OwnerPass123!',
     fullName: 'Dr. Neha Patel',
     department: 'Advanced Manufacturing Lab',
-    studentId: 'PSIT-FAC-019',
+    studentId: 'SKO-FAC-019',
     roles: ['RESOURCE_OWNER', 'REQUESTER'],
   },
   {
@@ -44,7 +44,7 @@ const DEMO_USERS = [
     password: 'ManagerPass123!',
     fullName: 'Prof. Rajesh Verma',
     department: 'Central Instrumentation Facility',
-    studentId: 'PSIT-MGR-007',
+    studentId: 'SKO-MGR-007',
     roles: ['MANAGER', 'REQUESTER'],
   },
   {
@@ -52,7 +52,7 @@ const DEMO_USERS = [
     password: 'AdminPass123!',
     fullName: 'Pooja Deshmukh (Admin)',
     department: 'Academic & Research Operations',
-    studentId: 'PSIT-ADM-001',
+    studentId: 'SKO-ADM-001',
     roles: ['ADMIN', 'REQUESTER'],
   },
 ]
@@ -63,15 +63,15 @@ async function seed() {
   // 1. Ensure institution exists
   const { error: instErr } = await adminClient.from('institutions').upsert({
     id: INSTITUTION_ID,
-    name: 'Pranveer Singh Institute of Technology',
-    slug: 'psit',
-    domain: 'psit.ac.in',
+    name: "Shikha's Organisation",
+    slug: 'shikhas-org',
+    domain: 'shikhaoorg.edu',
     is_demo: true,
   })
   if (instErr) {
     console.error('Error inserting institution:', instErr.message)
   } else {
-    console.log('[OK] Institution PSIT verified')
+    console.log("[OK] Institution Shikha's Organisation verified")
   }
 
   // 2. Ensure categories
@@ -577,7 +577,7 @@ async function seed() {
   await adminClient.from('notifications').upsert([
     {
       recipient_id: requesterId,
-      title: 'Welcome to ShareGrid PSIT',
+      title: 'Welcome to ShareGrid',
       message: 'Explore campus lab resources, complete required safety modules, and submit reservations.',
       type: 'SYSTEM_WELCOME',
       is_demo: true,
@@ -599,3 +599,5 @@ seed().catch((err) => {
   console.error('Fatal seed error:', err)
   process.exit(1)
 })
+
+

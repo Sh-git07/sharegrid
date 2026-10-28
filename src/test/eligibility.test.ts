@@ -4,7 +4,7 @@ import { evaluateEligibility } from '../lib/eligibility'
 const mockProfile = {
   id: 'user-123',
   institution_id: 'inst-1',
-  email: 'student@psit.ac.in',
+  email: 'student@shikhaoorg.edu',
   full_name: 'Aarav Sharma',
   avatar_url: null,
   department: 'Robotics',
@@ -72,7 +72,7 @@ describe('Eligibility Engine', () => {
       user_id: 'user-123',
       course_name: '3D Printer Safety',
       course_code: 'SAFE-3D-101',
-      certificate_url: 'https://psit.ac.in/cert.pdf',
+      certificate_url: 'https://shikhaoorg.edu/cert.pdf',
       verification_status: 'VERIFIED' as const,
       issued_at: new Date().toISOString(),
       expires_at: new Date(Date.now() + 100 * 24 * 3600 * 1000).toISOString(),
@@ -96,7 +96,7 @@ describe('Eligibility Engine', () => {
       user_id: 'user-123',
       course_name: '3D Printer Safety',
       course_code: 'SAFE-3D-101',
-      certificate_url: 'https://psit.ac.in/cert.pdf',
+      certificate_url: 'https://shikhaoorg.edu/cert.pdf',
       verification_status: 'VERIFIED' as const,
       issued_at: new Date(Date.now() - 400 * 24 * 3600 * 1000).toISOString(),
       expires_at: new Date(Date.now() - 5 * 24 * 3600 * 1000).toISOString(), // Expired 5 days ago
@@ -118,7 +118,7 @@ describe('Eligibility Engine', () => {
       user_id: 'user-123',
       course_name: '3D Printer Safety',
       course_code: 'SAFE-3D-101',
-      certificate_url: 'https://psit.ac.in/cert.pdf',
+      certificate_url: 'https://shikhaoorg.edu/cert.pdf',
       verification_status: 'PENDING' as const,
       issued_at: new Date().toISOString(),
       expires_at: null,
@@ -141,7 +141,7 @@ describe('Eligibility Engine', () => {
       user_id: 'user-123',
       course_name: '3D Printer Safety',
       course_code: 'SAFE-3D-101',
-      certificate_url: 'https://psit.ac.in/cert.pdf',
+      certificate_url: 'https://shikhaoorg.edu/cert.pdf',
       verification_status: 'VERIFIED' as const,
       issued_at: new Date().toISOString(),
       expires_at: new Date(Date.now() + 100 * 24 * 3600 * 1000).toISOString(),
@@ -158,3 +158,4 @@ describe('Eligibility Engine', () => {
     expect(res.missing.some((m) => m.type === 'USAGE_CAP')).toBe(true)
   })
 })
+

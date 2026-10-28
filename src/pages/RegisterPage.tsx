@@ -79,7 +79,7 @@ export function RegisterPage() {
             <span className="text-2xl font-bold text-navy">ShareGrid</span>
           </Link>
           <h2 className="text-xl font-semibold text-foreground">Create campus account</h2>
-          <p className="text-xs text-muted-foreground">Pranveer Singh Institute of Technology</p>
+          <p className="text-xs text-muted-foreground">Shikha's Organisation</p>
         </div>
 
         <Card className="border-border shadow-xs">
@@ -121,7 +121,7 @@ export function RegisterPage() {
                   <Input
                     type="email"
                     required
-                    placeholder="student@psit.ac.in"
+                    placeholder="student@shikhaoorg.edu"
                     className="pl-9 h-9 text-xs"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -144,7 +144,7 @@ export function RegisterPage() {
                   <label className="text-xs font-medium text-navy">ID / Roll No</label>
                   <Input
                     type="text"
-                    placeholder="PSIT-2024-042"
+                    placeholder="SKO-2024-042"
                     className="h-9 text-xs"
                     value={studentStaffId}
                     onChange={(e) => setStudentStaffId(e.target.value)}
@@ -187,3 +187,5 @@ export function RegisterPage() {
     </div>
   )
 }
+
+

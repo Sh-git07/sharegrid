@@ -138,7 +138,7 @@ export function ProfilePage() {
                   </div>
                 </div>
                 <CardDescription className="text-xs">
-                  Connected to Pranveer Singh Institute of Technology directory
+                  Connected to Shikha's Organisation directory
                 </CardDescription>
               </CardHeader>
 
@@ -198,7 +198,7 @@ export function ProfilePage() {
                     <label className="font-semibold text-navy">Student / Staff ID</label>
                     <Input
                       type="text"
-                      placeholder="PSIT-2024-UG-042"
+                      placeholder="SKO-2024-UG-042"
                       value={studentId}
                       onChange={(e) => setStudentId(e.target.value)}
                       className="h-9 text-xs"
@@ -340,7 +340,7 @@ export function ProfilePage() {
               <Input
                 type="url"
                 required
-                placeholder="https://psit.ac.in/certs/my-doc.pdf"
+                placeholder="https://shikhaoorg.edu/certs/my-doc.pdf"
                 value={certUrl}
                 onChange={(e) => setCertUrl(e.target.value)}
                 className="h-9 text-xs"
@@ -361,3 +361,5 @@ export function ProfilePage() {
     </div>
   )
 }
+
+

@@ -4,8 +4,8 @@ import { Grid, ShieldCheck, Heart } from 'lucide-react'
 
 export function Footer() {
   return (
-    <footer className="border-t bg-white mt-auto">
-      <div className="container max-w-7xl mx-auto px-4 sm:px-8 py-10">
+    <footer className="border-t border-border bg-white mt-auto">
+      <div className="container max-w-7xl mx-auto px-4 sm:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="space-y-3 md:col-span-1">
             <div className="flex items-center gap-2">
@@ -15,7 +15,7 @@ export function Footer() {
               <span className="font-bold text-navy tracking-tight">ShareGrid</span>
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Access more. Own less. Share responsibly. High-trust campus equipment sharing for Pranveer Singh Institute of Technology.
+              Access more. Own less. Share responsibly. High-trust equipment sharing for Shikha's Organisation.
             </p>
           </div>
 
@@ -43,7 +43,7 @@ export function Footer() {
             <h4 className="text-xs font-semibold text-navy uppercase tracking-wider mb-3">Institution Trust</h4>
             <div className="rounded-lg bg-cream border border-border p-3 space-y-2">
               <div className="flex items-center gap-1.5 text-xs font-semibold text-navy">
-                <ShieldCheck className="h-4 w-4 text-teal-600" /> Verified PSIT Facility
+                <ShieldCheck className="h-4 w-4 text-teal-600" /> Verified Facility
               </div>
               <p className="text-[11px] text-muted-foreground leading-snug">
                 Strict condition tracking, manager verification, deterministic conflict prevention, and immutable audit logs.
@@ -53,9 +53,9 @@ export function Footer() {
         </div>
 
         <div className="mt-8 pt-6 border-t border-border flex flex-col sm:flex-row items-center justify-between text-xs text-muted-foreground gap-4">
-          <p>© {new Date().getFullYear()} ShareGrid. Pranveer Singh Institute of Technology.</p>
+          <p>© {new Date().getFullYear()} ShareGrid. Shikha's Organisation.</p>
           <p className="flex items-center gap-1 text-[11px]">
-            Engineered for fair campus access <Heart className="h-3 w-3 text-rose-500 fill-rose-500" />
+            Engineered for fair access <Heart className="h-3 w-3 text-rose-500 fill-rose-500" />
           </p>
         </div>
       </div>

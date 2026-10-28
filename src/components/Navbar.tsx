@@ -108,7 +108,7 @@ export function Navbar() {
             <div>
               <span className="text-xl font-bold tracking-tight text-navy">ShareGrid</span>
               <span className="hidden sm:inline-block ml-2 text-[11px] font-medium text-teal-700 bg-teal-50 px-2 py-0.5 rounded-full border border-teal-200">
-                PSIT Campus
+                Shikha's Organisation
               </span>
             </div>
           </Link>
@@ -365,3 +365,4 @@ export function Navbar() {
     </header>
   )
 }
+

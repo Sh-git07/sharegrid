@@ -8,7 +8,7 @@ export function TermsPage() {
       <div className="space-y-2">
         <Badge variant="secondary" className="text-xs">Institutional Regulations</Badge>
         <h1 className="text-3xl font-bold text-navy">Equipment Usage Terms & Policy</h1>
-        <p className="text-xs text-muted-foreground">Governing PSIT Shared Laboratory Resources</p>
+        <p className="text-xs text-muted-foreground">Governing Shikha's Organisation Shared Laboratory Resources</p>
       </div>
 
       <Card className="p-8 space-y-4 border-border text-xs leading-relaxed text-foreground/80">
@@ -35,3 +35,4 @@ export function TermsPage() {
     </div>
   )
 }
+

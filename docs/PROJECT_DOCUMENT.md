@@ -1,7 +1,7 @@
-# ShareGrid PSIT: Comprehensive Project Documentation
+# ShareGrid: Comprehensive Project Documentation
 
 **Tagline:** Access more. Own less. Share responsibly.  
-**Institution:** Pranveer Singh Institute of Technology (PSIT)  
+**Institution:** Shikha's Organisation  
 **Author:** Solo Hackathon Participant  
 
 ---
@@ -68,4 +68,6 @@ ShareGrid is an institutional trust marketplace that establishes accountability 
 
 ## 7. Known Limitations & Future Work
 - **Hardware IoT Integration:** Future milestones include smart magnetic lockers and automated smart-plug telemetry.
-- **Multi-Tenant Campus Federations:** While the database schema incorporates `institution_id` across all relational entities, current tenancy defaults to the PSIT demo campus.
+- **Multi-Tenant Campus Federations:** While the database schema incorporates `institution_id` across all relational entities, current tenancy defaults to the Shikha's Organisation demo campus.
+
+

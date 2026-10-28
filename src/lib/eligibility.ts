@@ -41,7 +41,7 @@ export function evaluateEligibility(
   // 1. Institution check
   if (resource.institution_id && profile.institution_id) {
     if (resource.institution_id === profile.institution_id) {
-      satisfied.push({ type: 'INSTITUTION', title: 'Campus Member (PSIT)' })
+      satisfied.push({ type: 'INSTITUTION', title: "Campus Member (Shikha's Organisation)" })
     } else {
       isEligible = false
       missing.push({ type: 'INSTITUTION', title: 'Cross-institution sharing not enabled' })
@@ -139,3 +139,4 @@ export function evaluateEligibility(
     verificationStatus: isEligible ? 'ELIGIBLE' : 'INELIGIBLE',
   }
 }
+

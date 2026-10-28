@@ -316,7 +316,7 @@ export function ResourceDetailPage() {
               </span>
               <span className="flex items-center gap-1.5">
                 <Building className="h-4 w-4 text-navy-400" />
-                PSIT Campus
+                Shikha's Organisation
               </span>
             </div>
           </div>
@@ -625,7 +625,7 @@ export function ResourceDetailPage() {
               <Input
                 type="url"
                 required
-                placeholder="https://psit.ac.in/certs/my-safety-certificate.pdf"
+                placeholder="https://shikhaoorg.edu/certs/my-safety-certificate.pdf"
                 value={certificateUrl}
                 onChange={(e) => setCertificateUrl(e.target.value)}
                 className="h-9 text-xs"
@@ -660,3 +660,4 @@ export function ResourceDetailPage() {
     </div>
   )
 }
+

@@ -8,7 +8,7 @@ export function PrivacyPage() {
       <div className="space-y-2">
         <Badge variant="secondary" className="text-xs">Data Governance</Badge>
         <h1 className="text-3xl font-bold text-navy">Campus Privacy Policy</h1>
-        <p className="text-xs text-muted-foreground">Last updated: October 2026 • Pranveer Singh Institute of Technology</p>
+        <p className="text-xs text-muted-foreground">Last updated: October 2026 • Shikha's Organisation</p>
       </div>
 
       <Card className="p-8 space-y-4 border-border text-xs leading-relaxed text-foreground/80">
@@ -30,3 +30,4 @@ export function PrivacyPage() {
     </div>
   )
 }
+

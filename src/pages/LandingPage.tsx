@@ -51,7 +51,7 @@ export function LandingPage() {
         <div className="container max-w-7xl mx-auto px-4 sm:px-8">
           <div className="max-w-3xl mx-auto text-center space-y-6">
             <Badge variant="teal" className="px-3 py-1 text-xs font-semibold tracking-wide uppercase">
-              Pranveer Singh Institute of Technology
+              Shikha's Organisation
             </Badge>
 
             <h1 className="text-4xl sm:text-6xl font-extrabold text-navy tracking-tight leading-tight">
@@ -213,3 +213,4 @@ export function LandingPage() {
     </div>
   )
 }
+

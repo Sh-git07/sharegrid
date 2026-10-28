@@ -64,7 +64,7 @@ export function ForgotPasswordPage() {
                     <Input
                       type="email"
                       required
-                      placeholder="student@psit.ac.in"
+                      placeholder="student@shikhaoorg.edu"
                       className="pl-9 h-9 text-xs"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -87,3 +87,4 @@ export function ForgotPasswordPage() {
     </div>
   )
 }
+

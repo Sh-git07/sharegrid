@@ -1,10 +1,10 @@
--- Seed Pranveer Singh Institute of Technology Demo Institution
+-- Seed Shikha's Organisation Demo Institution
 INSERT INTO public.institutions (id, name, slug, domain, is_demo)
 VALUES (
   '11111111-1111-1111-1111-111111111111',
-  'Pranveer Singh Institute of Technology',
-  'psit',
-  'psit.ac.in',
+  'Shikha's Organisation',
+  'shikhas-org',
+  'shikhaoorg.edu',
   true
 ) ON CONFLICT (slug) DO UPDATE SET name = EXCLUDED.name;
 
@@ -26,3 +26,5 @@ VALUES
   ('11111111-1111-1111-1111-111111111111', 'incident_escalation', '{"critical_severity_response_hours": 12, "damage_assessment_window_days": 3}'::jsonb),
   ('11111111-1111-1111-1111-111111111111', 'supervision_matrix', '{"heavy_machinery": true, "high_voltage": true}'::jsonb)
 ON CONFLICT (institution_id, policy_key) DO UPDATE SET policy_value = EXCLUDED.policy_value;
+
+

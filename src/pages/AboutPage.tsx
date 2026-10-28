@@ -8,7 +8,7 @@ export function AboutPage() {
     <div className="container max-w-4xl mx-auto px-4 sm:px-8 py-12 space-y-8">
       <div className="text-center space-y-3">
         <Badge variant="teal" className="text-xs uppercase">Institutional Resource Infrastructure</Badge>
-        <h1 className="text-3xl sm:text-4xl font-extrabold text-navy">About ShareGrid PSIT</h1>
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-navy">About ShareGrid</h1>
         <p className="text-sm text-muted-foreground max-w-2xl mx-auto leading-relaxed">
           Access more. Own less. Share responsibly.
         </p>
@@ -59,3 +59,4 @@ export function AboutPage() {
     </div>
   )
 }
+

@@ -7,8 +7,6 @@
 
 ShareGrid is an institutional resource-sharing platform engineered for campus communities. It transforms idle scientific instruments, 3D printers, media equipment, and research spaces into a safe, fair, and audited marketplace.
 
-Built for **Pranveer Singh Institute of Technology (PSIT)**.
-
 ---
 
 ## 🌐 Live Deployment & Supabase Auth Setup
@@ -150,11 +148,3 @@ All steps are visually documented in [`docs/screenshots/`](docs/screenshots/).
 - **Database Exclusion Constraints:** Active reservations maintain a `blocked_range` `tstzrange` column with buffer windows.
 - **Append-Only Auditing:** UPDATE and DELETE operations on `audit_logs` are revoked for all roles.
 - **Service Role Key Isolation:** Service role keys are used strictly in scripts and edge functions, never exposed to client bundles.
-
-> [!IMPORTANT]
-> **Supabase Free Tier Inactivity Notice:** Supabase projects on the free plan automatically pause after approximately 7 days of inactivity. Please open the Supabase dashboard to verify project activity prior to evaluation.
-
----
-
-## 📄 License
-MIT License. Created for the Antigravity Solo Hackathon.
