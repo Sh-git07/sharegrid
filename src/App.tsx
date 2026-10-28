@@ -1,38 +1,149 @@
+import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
+import { AuthProvider } from './features/auth/AuthContext'
+import { Navbar } from './components/Navbar'
+import { Footer } from './components/Footer'
+import { ProtectedRoute } from './routes/ProtectedRoute'
+import { RoleRoute } from './routes/RoleRoute'
 
-// Pages (lazy-loaded placeholders until features are built)
-function HomePage() {
-  return (
-    <div className="min-h-screen bg-cream flex flex-col items-center justify-center gap-6 p-8">
-      <div className="text-center">
-        <h1 className="text-4xl font-bold text-navy mb-2">ShareGrid</h1>
-        <p className="text-lg text-muted-foreground">Campus Resource Sharing Platform</p>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl w-full">
-        {['Resources', 'Bookings', 'Dashboard'].map((item) => (
-          <div
-            key={item}
-            className="rounded-xl border bg-card p-6 text-center shadow-sm hover:shadow-md transition-shadow"
-          >
-            <p className="font-semibold text-navy">{item}</p>
-            <p className="text-sm text-muted-foreground mt-1">Coming soon</p>
-          </div>
-        ))}
-      </div>
-      <p className="text-xs text-muted-foreground">Phase 1 & 2 scaffolding complete ✓</p>
-    </div>
-  )
-}
+// Pages
+import { LandingPage } from './pages/LandingPage'
+import { LoginPage } from './pages/LoginPage'
+import { RegisterPage } from './pages/RegisterPage'
+import { ForgotPasswordPage } from './pages/ForgotPasswordPage'
+import { MarketplacePage } from './pages/MarketplacePage'
+import { ResourceDetailPage } from './pages/ResourceDetailPage'
+import { ResourceFormPage } from './pages/ResourceFormPage'
+import { BookingsPage } from './pages/BookingsPage'
+import { BookingDetailPage } from './pages/BookingDetailPage'
+import { ReviewInboxPage } from './pages/ReviewInboxPage'
+import { IncidentsPage } from './pages/IncidentsPage'
+import { IncidentDetailPage } from './pages/IncidentDetailPage'
+import { DashboardPage } from './pages/DashboardPage'
+import { AdminPage } from './pages/AdminPage'
+import { ProfilePage } from './pages/ProfilePage'
+import { AboutPage } from './pages/AboutPage'
+import { PrivacyPage } from './pages/PrivacyPage'
+import { TermsPage } from './pages/TermsPage'
 
 export default function App() {
   return (
-    <Routes>
-      <Route path="/" element={<HomePage />} />
-      <Route path="/resources" element={<Navigate to="/" replace />} />
-      <Route path="/bookings" element={<Navigate to="/" replace />} />
-      <Route path="/dashboard" element={<Navigate to="/" replace />} />
-      <Route path="/login" element={<Navigate to="/" replace />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <AuthProvider>
+      <div className="flex flex-col min-h-screen bg-cream">
+        <Navbar />
+        <main className="flex-1">
+          <Routes>
+            {/* Public Pages */}
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/register" element={<RegisterPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/resources" element={<MarketplacePage />} />
+            <Route path="/resources/:id" element={<ResourceDetailPage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/privacy" element={<PrivacyPage />} />
+            <Route path="/terms" element={<TermsPage />} />
+
+            {/* Requester & Member Routes */}
+            <Route
+              path="/bookings"
+              element={
+                <ProtectedRoute>
+                  <BookingsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/bookings/:id"
+              element={
+                <ProtectedRoute>
+                  <BookingDetailPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/incidents"
+              element={
+                <ProtectedRoute>
+                  <IncidentsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/incidents/:id"
+              element={
+                <ProtectedRoute>
+                  <IncidentDetailPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <DashboardPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                <ProtectedRoute>
+                  <ProfilePage />
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Owner & Manager Routes */}
+            <Route
+              path="/owner/resources/new"
+              element={
+                <ProtectedRoute>
+                  <RoleRoute allowedRoles={['RESOURCE_OWNER', 'ADMIN']}>
+                    <ResourceFormPage />
+                  </RoleRoute>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/owner/resources/:id/edit"
+              element={
+                <ProtectedRoute>
+                  <RoleRoute allowedRoles={['RESOURCE_OWNER', 'ADMIN']}>
+                    <ResourceFormPage />
+                  </RoleRoute>
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/review"
+              element={
+                <ProtectedRoute>
+                  <RoleRoute allowedRoles={['RESOURCE_OWNER', 'MANAGER', 'ADMIN']}>
+                    <ReviewInboxPage />
+                  </RoleRoute>
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Admin & Manager Routes */}
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <RoleRoute allowedRoles={['MANAGER', 'ADMIN']}>
+                    <AdminPage />
+                  </RoleRoute>
+                </ProtectedRoute>
+              }
+            />
+
+            {/* Fallback */}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
+    </AuthProvider>
   )
 }

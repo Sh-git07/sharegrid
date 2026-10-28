@@ -391,43 +391,49 @@ async function seed() {
 
   // 6. Seed Requirements
   // Ultimaker requires SAFE-3D-101
-  await adminClient.from('resource_requirements').upsert({
-    id: 'req11111-1111-1111-1111-111111111111',
+  const r1 = await adminClient.from('resource_requirements').upsert({
+    id: 'e1111111-1111-1111-1111-111111111111',
     resource_id: 'd1111111-1111-1111-1111-111111111111',
     requirement_type: 'TRAINING',
     title: '3D Printer Safety & Operation Certification',
     description: 'Completion of 3D printer safety, fire prevention, and slicer temperature setup module.',
     training_course_code: 'SAFE-3D-101',
   })
+  if (r1.error) throw r1.error
 
   // Oscilloscope requires ELEC-201
-  await adminClient.from('resource_requirements').upsert({
-    id: 'req22222-2222-2222-2222-222222222222',
+  const r2 = await adminClient.from('resource_requirements').upsert({
+    id: 'e2222222-2222-2222-2222-222222222222',
     resource_id: 'd2222222-2222-2222-2222-222222222222',
     requirement_type: 'TRAINING',
     title: 'Basic Electronics & Soldering Safety',
     description: 'ESD compliance and high-temp iron safety protocol certification.',
     training_course_code: 'ELEC-201',
   })
+  if (r2.error) throw r2.error
 
   // Haas CNC requires CNC-SAFE-301
-  await adminClient.from('resource_requirements').upsert({
-    id: 'req55555-5555-5555-5555-555555555555',
+  const r3 = await adminClient.from('resource_requirements').upsert({
+    id: 'e5555555-5555-5555-5555-555555555555',
     resource_id: 'd5555555-5555-5555-5555-555555555555',
     requirement_type: 'QUALIFICATION',
     title: 'Precision CNC Machining Safety License',
     description: 'Machining safety, tool zeroing, emergency stop protocol, and coolant management.',
     training_course_code: 'CNC-SAFE-301',
   })
+  if (r3.error) throw r3.error
   console.log('[OK] Resource requirements seeded')
 
   // 7. Seed Sample Training Records for Requester
+  // Clean prior demo scenario records so acceptance scenario always starts fresh
+  await adminClient.from('training_records').delete().eq('user_id', requesterId).eq('course_code', 'SAFE-3D-101')
+  await adminClient.from('bookings').delete().eq('requester_id', requesterId).eq('resource_id', 'd1111111-1111-1111-1111-111111111111')
   // - ELEC-201: Verified and valid
   // - CNC-SAFE-301: Expired qualification
   // (Notice: SAFE-3D-101 is NOT verified yet, so requester can submit in demo scenario!)
-  await adminClient.from('training_records').upsert([
+  const tr = await adminClient.from('training_records').upsert([
     {
-      id: 't1111111-1111-1111-1111-111111111111',
+      id: 'a1111111-1111-1111-1111-111111111111',
       user_id: requesterId,
       course_name: 'Basic Electronics & Soldering Safety',
       course_code: 'ELEC-201',
@@ -440,7 +446,7 @@ async function seed() {
       is_demo: true,
     },
     {
-      id: 't2222222-2222-2222-2222-222222222222',
+      id: 'a2222222-2222-2222-2222-222222222222',
       user_id: requesterId,
       course_name: 'Precision CNC Machining Safety License',
       course_code: 'CNC-SAFE-301',
@@ -453,6 +459,7 @@ async function seed() {
       is_demo: true,
     },
   ])
+  if (tr.error) throw tr.error
   console.log('[OK] Sample training records seeded (ELEC-201 active, CNC-SAFE-301 expired)')
 
   // 8. Seed Sample Historical Bookings
@@ -460,7 +467,7 @@ async function seed() {
   const pastStart = new Date(Date.now() - 72 * 3600 * 1000)
   const pastEnd = new Date(Date.now() - 68 * 3600 * 1000)
 
-  const { data: pastBooking } = await adminClient.from('bookings').upsert({
+  const { data: pastBooking, error: pbErr } = await adminClient.from('bookings').upsert({
     id: 'b1111111-1111-1111-1111-111111111111',
     resource_id: 'd2222222-2222-2222-2222-222222222222',
     requester_id: requesterId,
@@ -472,12 +479,13 @@ async function seed() {
     notes: 'Completed without issues. Workstation left clean.',
     is_demo: true,
   }).select().single()
+  if (pbErr) throw pbErr
 
   if (pastBooking) {
     // Condition reports
-    await adminClient.from('condition_reports').upsert([
+    const crRes = await adminClient.from('condition_reports').upsert([
       {
-        id: 'cr111111-1111-1111-1111-111111111111',
+        id: 'c0011111-1111-1111-1111-111111111111',
         booking_id: pastBooking.id,
         reporter_id: requesterId,
         phase: 'INITIAL',
@@ -486,7 +494,7 @@ async function seed() {
         is_demo: true,
       },
       {
-        id: 'cr222222-2222-2222-2222-222222222222',
+        id: 'c0022222-2222-2222-2222-222222222222',
         booking_id: pastBooking.id,
         reporter_id: requesterId,
         phase: 'FINAL',
@@ -495,9 +503,11 @@ async function seed() {
         is_demo: true,
       },
     ])
+    if (crRes.error) throw crRes.error
 
     // Usage record
-    await adminClient.from('usage_records').upsert({
+    const urRes = await adminClient.from('usage_records').upsert({
+      id: 'ee001111-1111-1111-1111-111111111111',
       user_id: requesterId,
       resource_id: 'd2222222-2222-2222-2222-222222222222',
       booking_id: pastBooking.id,
@@ -505,13 +515,14 @@ async function seed() {
       duration_hours: 4.0,
       recorded_at: pastStart.toISOString(),
     })
+    if (urRes.error) throw urRes.error
   }
 
   // 9. Seed One Waitlisted Booking & Entry
   const futureStart = new Date(Date.now() + 48 * 3600 * 1000)
   const futureEnd = new Date(Date.now() + 52 * 3600 * 1000)
 
-  const { data: waitlistBooking } = await adminClient.from('bookings').upsert({
+  const { data: waitlistBooking, error: wbErr } = await adminClient.from('bookings').upsert({
     id: 'b2222222-2222-2222-2222-222222222222',
     resource_id: 'd4444444-4444-4444-4444-444444444444',
     requester_id: requesterId,
@@ -522,21 +533,23 @@ async function seed() {
     status: 'WAITLISTED',
     is_demo: true,
   }).select().single()
+  if (wbErr) throw wbErr
 
   if (waitlistBooking) {
-    await adminClient.from('waitlist_entries').upsert({
-      id: 'w1111111-1111-1111-1111-111111111111',
+    const wlRes = await adminClient.from('waitlist_entries').upsert({
+      id: 'e0011111-1111-1111-1111-111111111111',
       resource_id: 'd4444444-4444-4444-4444-444444444444',
       requester_id: requesterId,
       booking_id: waitlistBooking.id,
       position: 1,
       status: 'WAITING',
     })
+    if (wlRes.error) throw wlRes.error
   }
 
   // 10. Seed One Open Incident
-  const { data: incData } = await adminClient.from('incidents').upsert({
-    id: 'inc11111-1111-1111-1111-111111111111',
+  const { data: incData, error: incErr } = await adminClient.from('incidents').upsert({
+    id: 'f1111111-1111-1111-1111-111111111111',
     resource_id: 'd3333333-3333-3333-3333-333333333333',
     reporter_id: requesterId,
     assignee_id: managerId,
@@ -547,15 +560,17 @@ async function seed() {
     resolution_notes: 'Under review by lab manager; scheduled for replacement glass inspection.',
     is_demo: true,
   }).select().single()
+  if (incErr) throw incErr
 
   if (incData) {
-    await adminClient.from('incident_updates').upsert({
+    const incUpRes = await adminClient.from('incident_updates').upsert({
       incident_id: incData.id,
       author_id: managerId,
       status_from: 'OPEN',
       status_to: 'UNDER_REVIEW',
       note: 'Inspected camera kit bag. Main optics clean; replaced outer screw-on protector ring.',
     })
+    if (incUpRes.error) throw incUpRes.error
   }
 
   // 11. Initial Notifications
