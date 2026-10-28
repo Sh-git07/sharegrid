@@ -1,0 +1,22 @@
+# env
+.env*
+!.env.example
+
+# deps
+node_modules/
+dist/
+
+# vercel
+.vercel
+
+# supabase
+supabase/.branches
+supabase/.temp
+
+# os
+.DS_Store
+Thumbs.db
+
+# ide
+.vscode/settings.json
+*.log
