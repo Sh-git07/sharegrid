@@ -2,9 +2,24 @@
 
 > **Tagline:** Access more. Own less. Share responsibly.
 
+**Live Production URL:** [https://sharegrid-phi.vercel.app](https://sharegrid-phi.vercel.app)  
+**GitHub Repository:** [https://github.com/Sh-git07/sharegrid](https://github.com/Sh-git07/sharegrid)
+
 ShareGrid is an institutional resource-sharing platform engineered for campus communities. It transforms idle scientific instruments, 3D printers, media equipment, and research spaces into a safe, fair, and audited marketplace.
 
 Built for **Pranveer Singh Institute of Technology (PSIT)**.
+
+---
+
+## 🌐 Live Deployment & Supabase Auth Setup
+
+The production application is deployed on Vercel with security headers and SPA rewrites.
+To ensure Supabase Auth redirects correctly for password resets and magic links:
+1. Navigate to the **Supabase Dashboard** → Select project `askpkzotxnnzamwumfat`.
+2. Go to **Authentication** → **URL Configuration**.
+3. Set **Site URL** to: `https://sharegrid-phi.vercel.app`
+4. In **Redirect URLs**, add: `https://sharegrid-phi.vercel.app/**` and `http://localhost:5173/**`.
+5. Click **Save**.
 
 ---
 
@@ -105,6 +120,8 @@ npm run test:e2e
 npx tsx scripts/test-rls.ts
 ```
 
+All test runs are documented in [`docs/TEST_SUMMARY.md`](docs/TEST_SUMMARY.md).
+
 ---
 
 ## 📋 Primary Acceptance Scenario (Section 11)
@@ -122,6 +139,8 @@ ShareGrid satisfies the 12-step end-to-end scenario:
 10. **Owner Inspection:** Owner inspects condition report and marks reservation `COMPLETED`.
 11. **Audit & Timeline:** Both users review status timeline and immutable audit trail.
 12. **Incident Escalation:** Equipment damage or infractions can be escalated to `/incidents` with status updates.
+
+All steps are visually documented in [`docs/screenshots/`](docs/screenshots/).
 
 ---
 
