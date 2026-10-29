@@ -1,8 +1,7 @@
 import React from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { AuthProvider } from './features/auth/AuthContext'
-import { Navbar } from './components/Navbar'
-import { Footer } from './components/Footer'
+import { AppShell } from './components/AppShell'
 import { ProtectedRoute } from './routes/ProtectedRoute'
 import { RoleRoute } from './routes/RoleRoute'
 
@@ -29,121 +28,117 @@ import { TermsPage } from './pages/TermsPage'
 export default function App() {
   return (
     <AuthProvider>
-      <div className="flex flex-col min-h-screen bg-cream">
-        <Navbar />
-        <main className="flex-1">
-          <Routes>
-            {/* Public Pages */}
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-            <Route path="/resources" element={<MarketplacePage />} />
-            <Route path="/resources/:id" element={<ResourceDetailPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/privacy" element={<PrivacyPage />} />
-            <Route path="/terms" element={<TermsPage />} />
+      <AppShell>
+        <Routes>
+          {/* Public Pages */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route path="/resources" element={<MarketplacePage />} />
+          <Route path="/resources/:id" element={<ResourceDetailPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/terms" element={<TermsPage />} />
 
-            {/* Requester & Member Routes */}
-            <Route
-              path="/bookings"
-              element={
-                <ProtectedRoute>
-                  <BookingsPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/bookings/:id"
-              element={
-                <ProtectedRoute>
-                  <BookingDetailPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/incidents"
-              element={
-                <ProtectedRoute>
-                  <IncidentsPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/incidents/:id"
-              element={
-                <ProtectedRoute>
-                  <IncidentDetailPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <DashboardPage />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                <ProtectedRoute>
-                  <ProfilePage />
-                </ProtectedRoute>
-              }
-            />
+          {/* Requester & Member Routes */}
+          <Route
+            path="/bookings"
+            element={
+              <ProtectedRoute>
+                <BookingsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/bookings/:id"
+            element={
+              <ProtectedRoute>
+                <BookingDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/incidents"
+            element={
+              <ProtectedRoute>
+                <IncidentsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/incidents/:id"
+            element={
+              <ProtectedRoute>
+                <IncidentDetailPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
 
-            {/* Owner & Manager Routes */}
-            <Route
-              path="/owner/resources/new"
-              element={
-                <ProtectedRoute>
-                  <RoleRoute allowedRoles={['RESOURCE_OWNER', 'ADMIN']}>
-                    <ResourceFormPage />
-                  </RoleRoute>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/owner/resources/:id/edit"
-              element={
-                <ProtectedRoute>
-                  <RoleRoute allowedRoles={['RESOURCE_OWNER', 'ADMIN']}>
-                    <ResourceFormPage />
-                  </RoleRoute>
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/review"
-              element={
-                <ProtectedRoute>
-                  <RoleRoute allowedRoles={['RESOURCE_OWNER', 'MANAGER', 'ADMIN']}>
-                    <ReviewInboxPage />
-                  </RoleRoute>
-                </ProtectedRoute>
-              }
-            />
+          {/* Owner & Manager Routes */}
+          <Route
+            path="/owner/resources/new"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['RESOURCE_OWNER', 'ADMIN']}>
+                  <ResourceFormPage />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/owner/resources/:id/edit"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['RESOURCE_OWNER', 'ADMIN']}>
+                  <ResourceFormPage />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/review"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['RESOURCE_OWNER', 'MANAGER', 'ADMIN']}>
+                  <ReviewInboxPage />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
 
-            {/* Admin & Manager Routes */}
-            <Route
-              path="/admin"
-              element={
-                <ProtectedRoute>
-                  <RoleRoute allowedRoles={['MANAGER', 'ADMIN']}>
-                    <AdminPage />
-                  </RoleRoute>
-                </ProtectedRoute>
-              }
-            />
+          {/* Admin & Manager Routes */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute>
+                <RoleRoute allowedRoles={['MANAGER', 'ADMIN']}>
+                  <AdminPage />
+                </RoleRoute>
+              </ProtectedRoute>
+            }
+          />
 
-            {/* Fallback */}
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+          {/* Fallback */}
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </AppShell>
     </AuthProvider>
   )
 }

@@ -1,3 +1,4 @@
+import { PageContainer } from '../components/PageContainer'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -76,15 +77,10 @@ export function IncidentsPage() {
   }
 
   return (
-    <div className="container max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/80 pb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-navy tracking-tight">Incident & Safety Management</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Track equipment damage reports, safety infractions, late returns, and resolution notes.
-          </p>
-        </div>
-      </div>
+    <PageContainer
+      title="Incident & Safety Management"
+      description="Track equipment damage reports, safety infractions, late returns, and resolution notes."
+    >
 
       {/* Filter Chips */}
       <div className="flex gap-2 border-b border-border pb-2 text-xs">
@@ -165,6 +161,6 @@ export function IncidentsPage() {
           ))}
         </div>
       )}
-    </div>
+    </PageContainer>
   )
 }

@@ -1,3 +1,4 @@
+import { PageContainer } from '../components/PageContainer'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
@@ -47,20 +48,17 @@ export function BookingsPage() {
   })
 
   return (
-    <div className="container max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/80 pb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-navy tracking-tight">My Reservations</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Track reservation approvals, check in to active slots, and submit return condition checklists.
-          </p>
-        </div>
+    <PageContainer
+      title="My Reservations"
+      description="Track reservation approvals, check in to active slots, and submit return condition checklists."
+      action={
         <Link to="/resources">
           <Button size="sm" className="bg-navy hover:bg-navy-800 text-white font-medium text-xs">
             Browse More Equipment
           </Button>
         </Link>
-      </div>
+      }
+    >
 
       {/* Filter Tabs */}
       <div className="flex gap-2 border-b border-border pb-2 text-xs">
@@ -158,6 +156,6 @@ export function BookingsPage() {
           })}
         </div>
       )}
-    </div>
+    </PageContainer>
   )
 }

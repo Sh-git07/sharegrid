@@ -14,8 +14,8 @@ import {
   PieChart,
   Pie,
   Cell,
-  Legend,
 } from 'recharts'
+import { PageContainer } from '../components/PageContainer'
 import {
   Clock,
   Calendar,
@@ -26,7 +26,14 @@ import {
 } from 'lucide-react'
 
 export function DashboardPage() {
-  const { user, profile, roles } = useAuth()
+  const { user, roles } = useAuth()
+  const primaryRole = roles.includes('ADMIN')
+    ? 'ADMIN'
+    : roles.includes('MANAGER')
+    ? 'MANAGER'
+    : roles.includes('RESOURCE_OWNER')
+    ? 'RESOURCE_OWNER'
+    : 'REQUESTER'
 
   // Fetch KPI data
   const { data: stats, isLoading } = useQuery({
@@ -95,17 +102,22 @@ export function DashboardPage() {
   const COLORS = ['#1e3a5f', '#14b8a6', '#f59e0b', '#10b981', '#ef4444', '#8b5cf6']
 
   return (
-    <div className="container max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-navy tracking-tight">Facility Analytics & Utilization</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Live campus utilization metrics, booking cycle distribution, and safety audit health.
-        </p>
-      </div>
-
-      {/* KPI Cards */}
+    <PageContainer
+      title="Facility Analytics & Utilization"
+      description="Live campus utilization metrics, booking cycle distribution, and safety audit health."
+      action={
+        <div className="flex items-center gap-2">
+          <span className="text-xs font-semibold text-muted-foreground">Active Role:</span>
+          <Badge variant="outline" className="text-xs font-semibold text-navy bg-white shadow-2xs">
+            {primaryRole.replace('_', ' ')}
+          </Badge>
+        </div>
+      }
+    >
+      {/* KPI Cards - matching skeleton height */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="p-5 border-border shadow-2xs">
+        {/* Card 1: Total Utilization */}
+        <Card className="p-5 border-border shadow-2xs h-[116px] flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               Recorded Utilization
@@ -114,13 +126,18 @@ export function DashboardPage() {
               <Clock className="h-4 w-4" />
             </div>
           </div>
-          <p className="text-2xl font-extrabold text-navy mt-2">
-            {isLoading ? '...' : `${stats?.totalHours || 0} hrs`}
-          </p>
-          <span className="text-[11px] text-teal-700 font-medium">30-day rolling campus window</span>
+          {isLoading ? (
+            <div className="h-8 w-24 bg-muted/60 rounded animate-pulse my-0.5" />
+          ) : (
+            <p className="text-2xl font-extrabold text-navy my-0.5 leading-8">
+              {stats?.totalHours || 0} hrs
+            </p>
+          )}
+          <span className="text-[11px] text-teal-700 font-medium block truncate">30-day rolling campus window</span>
         </Card>
 
-        <Card className="p-5 border-border shadow-2xs">
+        {/* Card 2: Active Sessions */}
+        <Card className="p-5 border-border shadow-2xs h-[116px] flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               Active Sessions
@@ -129,13 +146,18 @@ export function DashboardPage() {
               <Calendar className="h-4 w-4" />
             </div>
           </div>
-          <p className="text-2xl font-extrabold text-teal-700 mt-2">
-            {isLoading ? '...' : stats?.activeCount || 0}
-          </p>
-          <span className="text-[11px] text-muted-foreground">Approved or checked-in now</span>
+          {isLoading ? (
+            <div className="h-8 w-20 bg-muted/60 rounded animate-pulse my-0.5" />
+          ) : (
+            <p className="text-2xl font-extrabold text-teal-700 my-0.5 leading-8">
+              {stats?.activeCount || 0}
+            </p>
+          )}
+          <span className="text-[11px] text-muted-foreground font-medium block truncate">Approved or checked-in now</span>
         </Card>
 
-        <Card className="p-5 border-border shadow-2xs">
+        {/* Card 3: Verified Qualifications */}
+        <Card className="p-5 border-border shadow-2xs h-[116px] flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               Verified Qualifications
@@ -144,13 +166,18 @@ export function DashboardPage() {
               <FileCheck className="h-4 w-4" />
             </div>
           </div>
-          <p className="text-2xl font-extrabold text-emerald-700 mt-2">
-            {isLoading ? '...' : stats?.verifiedCount || 0}
-          </p>
-          <span className="text-[11px] text-muted-foreground">Active safety credentials</span>
+          {isLoading ? (
+            <div className="h-8 w-20 bg-muted/60 rounded animate-pulse my-0.5" />
+          ) : (
+            <p className="text-2xl font-extrabold text-emerald-700 my-0.5 leading-8">
+              {stats?.verifiedCount || 0}
+            </p>
+          )}
+          <span className="text-[11px] text-muted-foreground font-medium block truncate">Active safety credentials</span>
         </Card>
 
-        <Card className="p-5 border-border shadow-2xs">
+        {/* Card 4: Open Incidents */}
+        <Card className="p-5 border-border shadow-2xs h-[116px] flex flex-col justify-between">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
               Open Incidents
@@ -159,67 +186,85 @@ export function DashboardPage() {
               <ShieldAlert className="h-4 w-4" />
             </div>
           </div>
-          <p className="text-2xl font-extrabold text-rose-700 mt-2">
-            {isLoading ? '...' : stats?.incidentCount || 0}
-          </p>
-          <span className="text-[11px] text-muted-foreground">Under review by lab manager</span>
+          {isLoading ? (
+            <div className="h-8 w-20 bg-muted/60 rounded animate-pulse my-0.5" />
+          ) : (
+            <p className="text-2xl font-extrabold text-rose-700 my-0.5 leading-8">
+              {stats?.incidentCount || 0}
+            </p>
+          )}
+          <span className="text-[11px] text-muted-foreground font-medium block truncate">Under review by lab manager</span>
         </Card>
       </div>
 
-      {/* Charts Section */}
+      {/* Charts Section - exact matching height */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Category Utilization Bar Chart */}
-        <Card className="p-5 border-border">
-          <CardHeader className="p-0 pb-4">
+        <Card className="p-5 border-border h-[348px] flex flex-col justify-between">
+          <CardHeader className="p-0 pb-4 shrink-0">
             <CardTitle className="text-base text-navy flex items-center gap-2">
               <TrendingUp className="h-4 w-4 text-teal-600" /> Equipment Hours by Lab Domain
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-0 h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={stats?.categoryUsage || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
-                <XAxis dataKey="name" tick={{ fontSize: 11 }} />
-                <YAxis tick={{ fontSize: 11 }} />
-                <Tooltip
-                  formatter={(val: any) => [`${val} hrs`, 'Usage']}
-                  contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', fontSize: '12px' }}
-                />
-                <Bar dataKey="hours" fill="#1e3a5f" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+          <CardContent className="p-0 h-64 flex-1">
+            {isLoading ? (
+              <div className="h-64 w-full rounded-lg bg-muted/40 animate-pulse flex flex-col items-center justify-center text-xs text-muted-foreground gap-2">
+                <div className="h-5 w-5 border-2 border-teal-600 border-t-transparent rounded-full animate-spin" />
+                <span>Loading lab domain metrics...</span>
+              </div>
+            ) : (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={stats?.categoryUsage || []} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <XAxis dataKey="name" tick={{ fontSize: 11 }} />
+                  <YAxis tick={{ fontSize: 11 }} />
+                  <Tooltip
+                    formatter={(val: any) => [`${val} hrs`, 'Usage']}
+                    contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', fontSize: '12px' }}
+                  />
+                  <Bar dataKey="hours" fill="#1e3a5f" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            )}
           </CardContent>
         </Card>
 
         {/* Status Distribution Pie Chart */}
-        <Card className="p-5 border-border">
-          <CardHeader className="p-0 pb-4">
+        <Card className="p-5 border-border h-[348px] flex flex-col justify-between">
+          <CardHeader className="p-0 pb-4 shrink-0">
             <CardTitle className="text-base text-navy flex items-center gap-2">
               <Activity className="h-4 w-4 text-teal-600" /> Booking Cycle Status Distribution
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-0 h-64">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={stats?.statusData || []}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={50}
-                  outerRadius={80}
-                  paddingAngle={4}
-                  dataKey="value"
-                  label={({ name, percent }: any) => `${name} ${(percent * 100).toFixed(0)}%`}
-                >
-                  {(stats?.statusData || []).map((_, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-                <Tooltip contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', fontSize: '12px' }} />
-              </PieChart>
-            </ResponsiveContainer>
+          <CardContent className="p-0 h-64 flex-1">
+            {isLoading ? (
+              <div className="h-64 w-full rounded-lg bg-muted/40 animate-pulse flex flex-col items-center justify-center text-xs text-muted-foreground gap-2">
+                <div className="h-5 w-5 border-2 border-teal-600 border-t-transparent rounded-full animate-spin" />
+                <span>Loading cycle status distribution...</span>
+              </div>
+            ) : (
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={stats?.statusData || []}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={50}
+                    outerRadius={80}
+                    paddingAngle={4}
+                    dataKey="value"
+                    label={({ name, percent }: any) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  >
+                    {(stats?.statusData || []).map((_, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip contentStyle={{ backgroundColor: '#fff', borderRadius: '8px', fontSize: '12px' }} />
+                </PieChart>
+              </ResponsiveContainer>
+            )}
           </CardContent>
         </Card>
       </div>
-    </div>
+    </PageContainer>
   )
 }

@@ -9,6 +9,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/tabs'
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '../components/ui/dialog'
 import { Textarea } from '../components/ui/textarea'
 import { formatDateTime } from '../lib/dates'
+import { PageContainer } from '../components/PageContainer'
 import {
   ShieldCheck,
   Users,
@@ -160,28 +161,22 @@ export function AdminPage() {
   }
 
   return (
-    <div className="container max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/80 pb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-navy tracking-tight">
-            Institutional Administration & Queue
-          </h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Shikha's Organisation • Safety verification queue, user permissions, and compliance ledger.
-          </p>
-        </div>
-
+    <PageContainer
+      title="Institutional Administration & Queue"
+      description="Shikha's Organisation • Safety verification queue, user permissions, and compliance ledger."
+      action={
         <Button
           onClick={handleResetDemo}
           disabled={resettingDemo}
           variant="outline"
           size="sm"
-          className="text-xs text-navy border-navy-200 hover:bg-navy-50 gap-1.5 self-start sm:self-auto"
+          className="text-xs text-navy border-navy-200 hover:bg-navy-50 gap-1.5"
         >
           <RotateCcw className={`h-3.5 w-3.5 ${resettingDemo ? 'animate-spin' : ''}`} />
           {resettingDemo ? 'Resetting...' : 'Reset Demo State'}
         </Button>
-      </div>
+      }
+    >
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList className="bg-muted p-1 rounded-xl">
@@ -399,7 +394,6 @@ export function AdminPage() {
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </PageContainer>
   )
 }
-

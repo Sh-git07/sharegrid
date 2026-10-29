@@ -1,3 +1,4 @@
+import { PageContainer } from '../components/PageContainer'
 import React, { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { supabase } from '../lib/supabase'
@@ -113,13 +114,10 @@ export function ProfilePage() {
   }
 
   return (
-    <div className="container max-w-5xl mx-auto px-4 sm:px-8 py-8 space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-navy tracking-tight">Institutional Profile</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Manage your verified campus credentials, departmental affiliation, and safety certifications.
-        </p>
-      </div>
+    <PageContainer
+      title="Institutional Profile"
+      description="Manage your verified campus credentials, departmental affiliation, and safety certifications."
+    >
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Profile Form */}
@@ -358,8 +356,6 @@ export function ProfilePage() {
           </form>
         </DialogContent>
       </Dialog>
-    </div>
+    </PageContainer>
   )
 }
-
-

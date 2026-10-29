@@ -1,3 +1,4 @@
+import { PageContainer } from '../components/PageContainer'
 import React, { useState, useMemo } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { useSearchParams } from 'react-router-dom'
@@ -112,21 +113,15 @@ export function MarketplacePage() {
   const hasActiveFilters = search || selectedCategory !== 'ALL' || selectedStatus !== 'ALL' || selectedType !== 'ALL'
 
   return (
-    <div className="container max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-8">
-      {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-border/80 pb-6">
-        <div>
-          <h1 className="text-3xl font-bold text-navy tracking-tight">Campus Resource Marketplace</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Discover and reserve specialized engineering, media, prototyping, and scientific facilities.
-          </p>
-        </div>
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-medium text-navy bg-navy-50 px-3 py-1.5 rounded-full border border-navy-200">
-            {filteredResources.length} {filteredResources.length === 1 ? 'Resource' : 'Resources'} Available
-          </span>
-        </div>
-      </div>
+    <PageContainer
+      title="Campus Resource Marketplace"
+      description="Discover and reserve specialized engineering, media, prototyping, and scientific facilities."
+      action={
+        <span className="text-xs font-medium text-navy bg-navy-50 px-3 py-1.5 rounded-full border border-navy-200">
+          {filteredResources.length} {filteredResources.length === 1 ? 'Resource' : 'Resources'} Available
+        </span>
+      }
+    >
 
       {/* Filter and Search Bar */}
       <div className="bg-card rounded-xl border border-border p-4 shadow-2xs space-y-4">
@@ -297,6 +292,6 @@ export function MarketplacePage() {
           })}
         </div>
       )}
-    </div>
+    </PageContainer>
   )
 }

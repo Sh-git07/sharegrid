@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState, useMemo } from 'react'
+import React, { createContext, useContext, useEffect, useState, useMemo, useRef } from 'react'
 import type { User, Session } from '@supabase/supabase-js'
 import { supabase } from '../../lib/supabase'
 import type { Database } from '../../lib/database.types'
@@ -23,7 +23,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
-const DEMO_CREDENTIALS = {
+const DEMO_CREDENTIALS: Record<string, { email: string; password: string }> = {
   requester: { email: 'requester@sharegrid.demo', password: 'RequesterPass123!' },
   owner: { email: 'owner@sharegrid.demo', password: 'OwnerPass123!' },
   manager: { email: 'manager@sharegrid.demo', password: 'ManagerPass123!' },
@@ -36,6 +36,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [profile, setProfile] = useState<Profile | null>(null)
   const [roles, setRoles] = useState<string[]>([])
   const [loading, setLoading] = useState(true)
+  const switchingRef = useRef(false)
 
   const fetchUserData = async (currentUser: User | null) => {
     if (!currentUser) {
@@ -79,7 +80,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // Listen for auth changes
     const {
       data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (_event, session) => {
+    } = supabase.auth.onAuthStateChange(async (event, session) => {
+      if (event === 'SIGNED_OUT' && switchingRef.current) {
+        return // Ignore intermediate signed out during demo switch
+      }
       setSession(session)
       setUser(session?.user ?? null)
       await fetchUserData(session?.user ?? null)
@@ -107,32 +111,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signOut = async () => {
     setLoading(true)
-    await supabase.auth.signOut()
-    setUser(null)
-    setSession(null)
-    setProfile(null)
-    setRoles([])
-    setLoading(false)
+    try {
+      await supabase.auth.signOut()
+    } finally {
+      setUser(null)
+      setSession(null)
+      setProfile(null)
+      setRoles([])
+      setLoading(false)
+    }
   }
 
   const switchDemoUser = async (role: 'requester' | 'owner' | 'manager' | 'admin') => {
+    switchingRef.current = true
     setLoading(true)
     const creds = DEMO_CREDENTIALS[role]
     if (!creds) {
       setLoading(false)
+      switchingRef.current = false
       return
     }
-    await supabase.auth.signOut()
-    const { data, error } = await supabase.auth.signInWithPassword(creds)
-    if (error) {
-      console.error('Demo switch error:', error)
+    try {
+      await supabase.auth.signOut()
+      const { data, error } = await supabase.auth.signInWithPassword(creds)
+      if (error) {
+        console.error('Demo switch error:', error)
+        throw error
+      }
+      if (data.session?.user) {
+        setUser(data.session.user)
+        setSession(data.session)
+        await fetchUserData(data.session.user)
+      }
+    } finally {
+      switchingRef.current = false
       setLoading(false)
-      throw error
-    }
-    if (data.session?.user) {
-      setUser(data.session.user)
-      setSession(data.session)
-      await fetchUserData(data.session.user)
     }
   }
 
@@ -163,7 +176,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       switchDemoUser,
       refreshProfile,
     }),
-    [user, session, profile, roles, loading]
+    [user, session, profile, roles, loading, isRequester, isOwner, isManager, isAdmin]
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
@@ -171,7 +184,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 export function useAuth() {
   const context = useContext(AuthContext)
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useAuth must be used within an AuthProvider')
   }
   return context

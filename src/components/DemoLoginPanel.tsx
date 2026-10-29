@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useAuth } from '../features/auth/AuthContext'
-import { Button } from './ui/button'
-import { Shield, Sparkles, User, Key, CheckCircle2 } from 'lucide-react'
+import { Sparkles } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 interface DemoLoginPanelProps {
@@ -10,21 +9,21 @@ interface DemoLoginPanelProps {
 }
 
 export function DemoLoginPanel({ onSuccess, compact = false }: DemoLoginPanelProps) {
-  const { switchDemoUser, user, roles } = useAuth()
+  const { switchDemoUser, user } = useAuth()
   const [switching, setSwitching] = useState<string | null>(null)
   const navigate = useNavigate()
 
   const isDemoMode = import.meta.env.VITE_DEMO_MODE === 'true'
   if (!isDemoMode) return null
 
-  const handleSelectRole = async (role: 'requester' | 'owner' | 'manager' | 'admin', targetPath = '/resources') => {
+  const handleSelectRole = async (role: 'requester' | 'owner' | 'manager' | 'admin') => {
     try {
       setSwitching(role)
       await switchDemoUser(role)
       if (onSuccess) {
-        onSuccess(targetPath)
+        onSuccess('/dashboard')
       } else {
-        navigate(targetPath)
+        navigate('/dashboard')
       }
     } catch (err) {
       console.error('Demo login failed', err)
@@ -40,7 +39,7 @@ export function DemoLoginPanel({ onSuccess, compact = false }: DemoLoginPanelPro
       name: 'Aarav Sharma',
       desc: 'Student researcher booking lab slots',
       color: 'border-blue-200 hover:border-blue-400 bg-blue-50/40',
-      path: '/resources',
+      path: '/dashboard',
     },
     {
       role: 'owner' as const,
@@ -48,7 +47,7 @@ export function DemoLoginPanel({ onSuccess, compact = false }: DemoLoginPanelPro
       name: 'Dr. Neha Patel',
       desc: 'FabLab owner approving printer slots',
       color: 'border-teal-200 hover:border-teal-400 bg-teal-50/40',
-      path: '/review',
+      path: '/dashboard',
     },
     {
       role: 'manager' as const,
@@ -56,7 +55,7 @@ export function DemoLoginPanel({ onSuccess, compact = false }: DemoLoginPanelPro
       name: 'Prof. Rajesh Verma',
       desc: 'Facility manager verifying safety records',
       color: 'border-amber-200 hover:border-amber-400 bg-amber-50/40',
-      path: '/admin',
+      path: '/dashboard',
     },
     {
       role: 'admin' as const,
@@ -64,15 +63,15 @@ export function DemoLoginPanel({ onSuccess, compact = false }: DemoLoginPanelPro
       name: 'Campus Admin',
       desc: 'Institution policies & audit log viewer',
       color: 'border-purple-200 hover:border-purple-400 bg-purple-50/40',
-      path: '/admin',
+      path: '/dashboard',
     },
   ]
 
   if (compact) {
     return (
-      <div className="flex flex-wrap items-center gap-1.5 p-1 bg-navy-50/80 rounded-lg border border-navy-100 text-xs">
-        <span className="text-[11px] font-semibold text-navy-700 px-2 flex items-center gap-1">
-          <Sparkles className="h-3 w-3 text-teal-600" /> Demo Switch:
+      <div className="flex flex-wrap items-center gap-1.5 p-1 bg-navy-50/80 rounded-lg border border-navy-100 text-xs shrink-0">
+        <span className="text-[11px] font-semibold text-navy-700 px-2 flex items-center gap-1 shrink-0">
+          <Sparkles className="h-3 w-3 text-teal-600 shrink-0" /> Demo Switch:
         </span>
         {roleConfigs.map((cfg) => {
           const isActive = user?.email?.startsWith(cfg.role)
@@ -80,15 +79,15 @@ export function DemoLoginPanel({ onSuccess, compact = false }: DemoLoginPanelPro
             <button
               key={cfg.role}
               data-testid={`quick-switch-${cfg.role}`}
-              onClick={() => handleSelectRole(cfg.role, cfg.path)}
+              onClick={() => handleSelectRole(cfg.role)}
               disabled={switching !== null}
-              className={`px-2.5 py-1 rounded text-xs font-medium transition-all ${
+              className={`px-2.5 py-1 rounded text-xs font-medium transition-all shrink-0 ${
                 isActive
                   ? 'bg-navy-700 text-white shadow-xs'
                   : 'bg-white hover:bg-navy-100 text-navy-800 border border-navy-200'
-              }`}
+              } ${switching === cfg.role ? 'opacity-70 animate-pulse' : ''}`}
             >
-              {switching === cfg.role ? '...' : cfg.title}
+              {cfg.title}
             </button>
           )
         })}
@@ -111,7 +110,7 @@ export function DemoLoginPanel({ onSuccess, compact = false }: DemoLoginPanelPro
           <button
             key={cfg.role}
             data-testid={`demo-login-${cfg.role}`}
-            onClick={() => handleSelectRole(cfg.role, cfg.path)}
+            onClick={() => handleSelectRole(cfg.role)}
             disabled={switching !== null}
             className={`p-3 rounded-lg border text-left transition-all ${cfg.color} hover:shadow-xs group`}
           >
